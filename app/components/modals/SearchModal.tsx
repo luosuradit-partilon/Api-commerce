@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import { formatISO } from 'date-fns';
 import Heading from '../Heading';
-import Calendar from '../Inputs/Calendar';
+import Calendar from '../inputs/Calendar';
 import Counter from '../inputs/Counter';
 
 enum STEPS {
