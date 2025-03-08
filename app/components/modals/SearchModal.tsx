@@ -1,5 +1,6 @@
 'use client'
 
+import { Range } from "react-date-range";
 import qs from 'query-string';
 import useSearchModal from "@/app/hooks/useSearchModals";
 import Modal from "./Modal";
@@ -28,7 +29,7 @@ const SearchModal = () => {
     const [guestCount, setGuestCount] = useState(1);
     const [roomCount, setRoomCount] = useState(1);
     const [bathroomCount, setBathroomCount] = useState(1);
-    const [dateRange, setDateRange] = useState({
+    const [dateRange, setDateRange] = useState<Range>({
         startDate: new Date(),
         endDate: new Date(),
         key: 'selection'
