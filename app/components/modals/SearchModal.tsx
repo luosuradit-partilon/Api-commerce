@@ -6,11 +6,11 @@ import Modal from "./Modal";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
-import CountrySelect, { CountrySelectValue } from "../Inputs/CountrySelect";
+import CountrySelect, { CountrySelectValue } from "../inputs/CountrySelect";
 import { formatISO } from 'date-fns';
 import Heading from '../Heading';
 import Calendar from '../Inputs/Calendar';
-import Counter from '../Inputs/Counter';
+import Counter from '../inputs/Counter';
 
 enum STEPS {
     LOCATION = 0,
