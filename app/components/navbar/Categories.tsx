@@ -2,98 +2,69 @@
 
 import Container from "../Container";
 import { FaUmbrellaBeach } from "@react-icons/all-files/fa/FaUmbrellaBeach";
-import { FaMountain } from "@react-icons/all-files/fa/FaMountain";
-import { FaSwimmingPool } from "@react-icons/all-files/fa/FaSwimmingPool";
-import { GiBarn } from "@react-icons/all-files/gi/GiBarn";
-import { GiBoatFishing } from "@react-icons/all-files/gi/GiBoatFishing";
-import { GiCactus } from "@react-icons/all-files/gi/GiCactus";
-import { GiCastle } from "@react-icons/all-files/gi/GiCastle";
-import { GiCaveEntrance } from "@react-icons/all-files/gi/GiCaveEntrance";
 import { GiForestCamp } from "@react-icons/all-files/gi/GiForestCamp";
-import { GiIsland } from "@react-icons/all-files/gi/GiIsland";
-import { GiWindmill } from "@react-icons/all-files/gi/GiWindmill";
-import { FaSkiing } from "@react-icons/all-files/fa/FaSkiing";
-import { GiCutDiamond } from "@react-icons/all-files/gi/GiCutDiamond";
-import { FaHome } from "@react-icons/all-files/fa/FaHome";
-import { FaSnowflake } from "@react-icons/all-files/fa/FaSnowflake";
+import { CiBitcoin } from "react-icons/ci";
+import { PiCreditCard, PiInfinityLight } from "react-icons/pi";
+import { IoCloudOutline } from "react-icons/io5";
+import { TbDatabaseCog } from "react-icons/tb";
+import { IoHardwareChipOutline } from "react-icons/io5";
 import CategoryBox from "../CategoryBox";
+import { PiBrainLight } from "react-icons/pi";
+import { PiShoppingCart } from "react-icons/pi";
+
+
 import { usePathname, useSearchParams } from "next/navigation";
 
 export const categories = [
    {
+      label: "Finance",
+      icon: PiCreditCard,
+      description: "This API is for for payment gateways, invoicing, and financial analytics.",
+   },
+   {
+      label: "E-Commerce",
+      icon: PiShoppingCart,
+      description: "This API is for product catalogs, inventory management, order processing, shipping, and customer reviews.",
+   },
+   {
+      label: "AI/ML",
+      icon: PiBrainLight,
+      description: "This API is for integrate AI and machine learning into your system.",
+   },
+   {
+      label: "IoT",
+      icon: IoHardwareChipOutline,
+      description: "This API is for IoT device management, sensor data, and hardware integration.",
+   },
+   {
+      label: "Data",
+      icon: TbDatabaseCog,
+      description: "This API is for performing etl, data warehousing, and data analysis.",
+   },
+   {
+      label: "Cloud",
+      icon: IoCloudOutline,
+      description: "This API is for cloud storage, serverless computing, container orchestration, and monitoring.",
+   },
+   {
+      label: "DevOps",
+      icon: PiInfinityLight,
+      description: "This API is for continuous integration, deployment, and monitoring.",
+   },
+   {
+      label: "Crypto",
+      icon: CiBitcoin,
+      description: "This API accepts crypto payments.",
+   },
+   {
       label: "Beach",
       icon: FaUmbrellaBeach,
-      description: "This property is close to the beach",
-   },
-   {
-      label: "Windmills",
-      icon: GiWindmill,
-      description: "This property has windmill",
-   },
-   {
-      label: "Modern",
-      icon: FaHome,
-      description: "This property is modern",
-   },
-   {
-      label: "Countryside",
-      icon: FaMountain,
-      description: "This property is mountain",
-   },
-   {
-      label: "Pools",
-      icon: FaSwimmingPool,
-      description: "This property has a pool",
-   },
-   {
-      label: "Islands",
-      icon: GiIsland,
-      description: "This property is on Island",
-   },
-   {
-      label: "Lake",
-      icon: GiBoatFishing,
-      description: "This property is close to the lake",
-   },
-   {
-      label: "Skiing",
-      icon: FaSkiing,
-      description: "This property has skiing activities",
-   },
-   {
-      label: "Castles",
-      icon: GiCastle,
-      description: "This property is in a castle",
+      description: "This API is close to the beach",
    },
    {
       label: "Camping",
       icon: GiForestCamp,
-      description: "This property has camping activities",
-   },
-   {
-      label: "Arctic",
-      icon: FaSnowflake,
-      description: "This property is newar arctic",
-   },
-   {
-      label: "Cave",
-      icon: GiCaveEntrance,
-      description: "This property has cave tours",
-   },
-   {
-      label: "Desert",
-      icon: GiCactus,
-      description: "This property is in the desert",
-   },
-   {
-      label: "Barns",
-      icon: GiBarn,
-      description: "This property is in the barn",
-   },
-   {
-      label: "Lux",
-      icon: GiCutDiamond,
-      description: "This property is luxurious",
+      description: "This API has camping activities",
    },
 ];
 

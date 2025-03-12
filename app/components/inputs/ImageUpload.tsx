@@ -2,7 +2,7 @@
 
 import { CldUploadWidget } from "next-cloudinary"; 
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { TbPhotoPlus } from "react-icons/tb";
 
 declare global {
@@ -10,24 +10,35 @@ declare global {
 }
 
 interface ImageUpladProps {
-    onChange: (value: string) => void;
-    value: string;
+    onChange: (value: string[]) => void;
+    value: string[];
 }
 
 const ImageUpload: React.FC<ImageUpladProps> = ({
     onChange,
-    value
+    value,
 }) => {
+    const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+
     const handleUpload = useCallback((result: any) => {
-         onChange(result.info.secure_url);
-    }, [onChange]);
+        const newImageUrl = result.info.secure_url;
+        setUploadedImages((prev) => [...prev, newImageUrl]);
+    }, []);
+
+    const handleClose = useCallback(() => {
+        const updatedImageUrls = [...value, ...uploadedImages];
+        onChange(updatedImageUrls);
+        setUploadedImages([]);
+        console.log(updatedImageUrls);
+    }, [onChange, uploadedImages, value]);
 
     return (
         <CldUploadWidget 
             onSuccess={handleUpload}
+            onClose={handleClose}
             uploadPreset="hellophoto"
             options={{
-                maxFiles: 1
+                maxFiles: 10
             }}
         >
             {({ open }) => {
@@ -55,18 +66,6 @@ const ImageUpload: React.FC<ImageUpladProps> = ({
                         <div className="font-semibold text-lg">
                             Click to upload
                         </div>
-                        {value && (
-                            <div
-                                className="absolute inset-0 w-full h-full"
-                            >
-                                <Image 
-                                    alt="Upload"
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                    src={value}
-                                />
-                            </div>
-                        )}
                     </div>
                 )
             }}

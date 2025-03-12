@@ -15,6 +15,7 @@ import Input from "../inputs/Input";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 enum STEPS {
     CATEGORY = 0,
@@ -48,7 +49,7 @@ const RentModal = () => {
             guestCount: 1,
             roomCount: 1,
             bathroomCount: 1,
-            imageSrc: '',
+            imageSrc: [],
             price: 1,
             title: '',
             description: ''
@@ -83,6 +84,7 @@ const RentModal = () => {
     }
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        console.log(data)
         if(step !== STEPS.PRICE){
             return onNext();
         }
@@ -198,19 +200,34 @@ const RentModal = () => {
         )
     }
 
-    if (step === STEPS.IMAGES){
+    if (step === STEPS.IMAGES) {
+        console.log("imageSrc:", imageSrc);
         bodyContent = (
-            <div    className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8">
                 <Heading 
-                    title="Add a photo of your place"
+                    title="Add photos of your place"
                     subtitle="Show guests what your place looks like!"
                 />
                 <ImageUpload 
-                    value={imageSrc}
+                    value={imageSrc} // Pass the array of image URLs
                     onChange={(value) => setCustomValue('imageSrc', value)}
                 />
+                {imageSrc?.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[25vh] overflow-y-auto">
+                        {imageSrc.map((src, index) => (
+                            <div key={index} className="relative h-40">
+                                <Image
+                                    alt={`Uploaded image ${index + 1}`} 
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                    src={src}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-        )
+        );
     }
 
     if (step === STEPS.DESCRIPTION) {
@@ -264,7 +281,7 @@ const RentModal = () => {
     
     return (
         <Modal 
-            title="Airbnb your home!"
+            title="Publish your API!"
             isOpen={rentModal.isOpen}
             onClose={rentModal.onClose}
             onSubmit={handleSubmit(onSubmit)}
