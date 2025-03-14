@@ -2,10 +2,11 @@ import EmptyState from "../components/EmptyState";
 import ClientOnly from "../components/ClientOnly";
 import getCurrentUser from "../actions/getCurrentUser";
 import getFavoriteListings from "../actions/getFavoriteListing";
+import { SafeListing } from "../types"; // Ensure SafeListing type is imported
 import FavoritesClient from "./FavoritesClient";
 
 const ListingPage = async () => {
-   const listings = await getFavoriteListings();
+   const listings = await getFavoriteListings() as SafeListing[]; // Add type assertion
    const currentUser = await getCurrentUser();
 
    if (listings.length === 0) {
@@ -21,7 +22,7 @@ const ListingPage = async () => {
 
    return (
       <ClientOnly>
-         <FavoritesClient listings={listings} currentUser={currentUser} />
+         <FavoritesClient listings={listings} currentUser={currentUser}/>
       </ClientOnly>
    );
 };
