@@ -79,6 +79,18 @@ export default async function getListings(params: IListingParams): Promise<SafeL
       const safeListings: SafeListing[] = listings.map((listing) => ({
          ...listing,
          createdAt: listing.createdAt.toISOString(),
+         // Ensure all properties of SafeListing are included
+         id: listing.id,
+         title: listing.title,
+         description: listing.description,
+         imageSrc: listing.imageSrc,
+         category: listing.category,
+         roomCount: listing.roomCount,
+         bathroomCount: listing.bathroomCount,
+         guestCount: listing.guestCount,
+         locationValue: listing.locationValue,
+         userId: listing.userId,
+         price: listing.price,
       }));
 
       return safeListings;
