@@ -1,4 +1,5 @@
 import prisma from "@/app/libs/prismadb";
+import { SafeListing } from "../types"; // Ensure SafeListing type is imported
 
 export interface IListingParams {
    userId?: string;
@@ -11,7 +12,7 @@ export interface IListingParams {
    category?: string;
 }
 
-export default async function getListings(params: IListingParams) {
+export default async function getListings(params: IListingParams): Promise<SafeListing[]> { // Add return type
    try {
       const {
          userId,
@@ -75,7 +76,7 @@ export default async function getListings(params: IListingParams) {
          where: query,
          orderBy: { createdAt: "desc" },
       });
-      const safeListings = listings.map((listing) => ({
+      const safeListings: SafeListing[] = listings.map((listing) => ({
          ...listing,
          createdAt: listing.createdAt.toISOString(),
       }));
