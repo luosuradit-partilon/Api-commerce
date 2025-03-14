@@ -29,7 +29,6 @@ const ImageUpload: React.FC<ImageUpladProps> = ({
         const updatedImageUrls = [...value, ...uploadedImages];
         onChange(updatedImageUrls);
         setUploadedImages([]);
-        console.log(updatedImageUrls);
     }, [onChange, uploadedImages, value]);
 
     return (

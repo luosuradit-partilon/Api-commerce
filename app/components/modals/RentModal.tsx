@@ -93,7 +93,6 @@ const RentModal = () => {
     }
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
         if (step !== STEPS.RESOURCES) { // Change the final step to RESOURCES
             return onNext();
         }
@@ -240,7 +239,6 @@ const RentModal = () => {
     }
 
     if (step === STEPS.IMAGES) {
-        console.log("imageSrc:", imageSrc);
         bodyContent = (
             <div className="flex flex-col gap-8">
                 <Heading 

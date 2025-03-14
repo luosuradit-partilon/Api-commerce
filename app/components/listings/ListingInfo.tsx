@@ -45,8 +45,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
    const { getByValue } = useCountries();
 
    const coordinates = getByValue(locationValue)?.latlng;
-   console.log(resources);
-   console.log(methods);
    return (
 
       <div className="col-span-4 flex flex-col gap-8">
