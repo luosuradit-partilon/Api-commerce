@@ -16,6 +16,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Button from "../Button";
+import { AiOutlinePlus } from "@react-icons/all-files/ai/AiOutlinePlus";
+import { AiOutlineMinus } from "@react-icons/all-files/ai/AiOutlineMinus";
+
 
 enum STEPS {
     CATEGORY = 0,
@@ -24,7 +28,10 @@ enum STEPS {
     IMAGES = 3,
     DESCRIPTION = 4,
     PRICE = 5,
+    RESOURCES = 6, // New step added
 }
+
+const httpmethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]; // List of HTTP methods
 
 const RentModal = () => {
     const router = useRouter();
@@ -52,7 +59,8 @@ const RentModal = () => {
             imageSrc: [],
             price: 1,
             title: '',
-            description: ''
+            description: '',
+            resources: [{ resourceName: '', methods: [{ type: '', description: '' }] }] // Default values for resources
         }
     });
 
@@ -62,6 +70,7 @@ const RentModal = () => {
     const roomCount = watch('roomCount');
     const bathroomCount = watch('bathroomCount');
     const imageSrc = watch('imageSrc');
+    const resources = watch('resources');
 
     const Map = useMemo(() => dynamic(() => import('../Map'), {
         ssr: false
@@ -83,30 +92,60 @@ const RentModal = () => {
         setStep((value) => value + 1);
     }
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
-        if(step !== STEPS.PRICE){
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        console.log(data);
+        if (step !== STEPS.RESOURCES) { // Change the final step to RESOURCES
             return onNext();
         }
         setIsLoading(true);
 
-        axios.post('/api/listings', data)
-        .then(() => {
+        try {
+            const listingResponse = await axios.post('/api/listings', data);
+            const listingId = listingResponse.data.id;
+
+            const resourcePromises = data.resources.map((resource: any) => {
+                return axios.post('/api/resources', {
+                    resourceName: resource.resourceName,
+                    listingId: listingId,
+                }).then((resourceResponse) => {
+                    const resourceId = resourceResponse.data.id;
+                    const methodPromises = resource.methods.map((method: any) => {
+                        return axios.post('/api/methods', {
+                            type: method.type,
+                            description: method.description,
+                            resourceId: resourceId,
+                        });
+                    });
+                    return Promise.all(methodPromises);
+                });
+            });
+
+            await Promise.all(resourcePromises);
+
             toast.success('Listing Created!');
             router.refresh();
             reset();
             setStep(STEPS.CATEGORY);
-            rentModal.onClose
-        })
-        .catch(() => {
-            toast.error('Something went wrong')
-        }).finally(() => {
+            rentModal.onClose();
+        } catch (error) {
+            toast.error('Something went wrong');
+        } finally {
             setIsLoading(false);
-        })
+        }
+    }
+
+    const addResource = () => {
+        const updatedResources = [...resources, { resourceName: '', methods: [{ type: '', description: '' }] }];
+        setCustomValue('resources', updatedResources);
+    }
+
+    const deleteResource = (index: number) => {
+        const updatedResources = resources.filter((_: any, i: number) => i !== index);
+        setCustomValue('resources', updatedResources);
     }
 
     const actionLabel = useMemo(() => {
-        if(step === STEPS.PRICE) {
+        if(step === STEPS.RESOURCES) {
             return 'Create';
         }
         return 'NEXT';
@@ -214,7 +253,7 @@ const RentModal = () => {
                 />
                 {imageSrc?.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[25vh] overflow-y-auto">
-                        {imageSrc.map((src, index) => (
+                        {imageSrc.map((src: string, index: number) => (
                             <div key={index} className="relative h-40">
                                 <Image
                                     alt={`Uploaded image ${index + 1}`} 
@@ -278,6 +317,93 @@ const RentModal = () => {
             </div>
         )
     }
+
+    if (step === STEPS.RESOURCES) {
+        bodyContent = (
+            <div className="flex flex-col gap-8">
+                <div className="flex justify-between items-center">
+                    <div className="flex flex-col gap-2">
+                        <Heading
+                            title="Add resource for your API"
+                            subtitle="Specify resource names and methods"
+                        />
+                    </div>
+                    <div
+                        onClick={addResource}
+                        className="w-12 h-12 rounded-full border-[1px] bg-rose-500 border-rose-500 flex items-center justify-center text-white cursor-pointer hover:opacity-80 transition"
+                    >
+                        <AiOutlinePlus />
+                    </div>
+                </div>
+                <div className="max-h-[50vh] overflow-y-auto">
+                    {resources.map((resource: any, index: number) => (
+                        <div key={index} className="flex flex-col">
+                            <hr className="m-5"/>
+                            <Heading
+                            title="New Resource"
+                            />
+                            <div className="flex justify-between items-center">
+                                <div className="max-w-[500px] w-full">
+                                <Input
+                                    id={`resources[${index}].resourceName`}
+                                    label="Resource Name (/example)"
+                                    disabled={isLoading}
+                                    register={register}
+                                    errors={errors}
+                                    required
+                                />
+                                </div>
+                                <div
+                                    onClick={() => deleteResource(index)}
+                                    className="w-10 h-10 rounded-full border-[1px] border-neutral-400 flex items-center justify-center text-neutral-600 cursor-pointer hover:opacity-80 transition"
+                                >
+                                <AiOutlineMinus />
+                                </div>
+                            </div>
+                            <div className="max-w-[150px] my-5">
+                                <Button
+                                    label="Add method"
+                                    onClick={() => {
+                                        const updatedResources = [...resources];
+                                        updatedResources[index].methods.push({ type: '', description: '' });
+                                        setCustomValue('resources', updatedResources);
+                                    }}
+                                />
+                            </div>
+                            {resources[index].methods.map((methods: any, methodsIndex: number) => (
+                                <div key={methodsIndex} className="flex flex-col gap-2">                               
+                                    <label htmlFor={`resources[${index}].methods[${methodsIndex}].type`} className="block text-sm font-medium text-gray-700">
+                                        methods Type
+                                    </label>
+                                    <select
+                                        id={`resources[${index}].methods[${methodsIndex}].type`}
+                                        {...register(`resources[${index}].methods[${methodsIndex}].type`, { required: true })}
+                                        disabled={isLoading}
+                                        className="mt-1 block max-w-[150px] w-full pl-3 pr-10 py-2 text-base border-[1px] border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                    >
+                                        {httpmethods.map((methods) => (
+                                            <option key={methods} value={methods}>
+                                                {methods}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <Input
+                                        id={`resources[${index}].methods[${methodsIndex}].description`}
+                                        label="Description"
+                                        disabled={isLoading}
+                                        register={register}
+                                        errors={errors}
+                                        required
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
     
     return (
         <Modal 

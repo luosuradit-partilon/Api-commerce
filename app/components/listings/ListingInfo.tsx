@@ -1,11 +1,14 @@
 "use client";
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeUser } from "@/app/types";
+import { SafeMethod, SafeResource, SafeUser } from "@/app/types";
+
 import { IconType } from "react-icons";
 import Avatar from "../Avatar";
 import ListingCategory from "./ListingCategory";
 import dynamic from "next/dynamic";
+import ListingResources from "./ListingResources";
+
 
 const Map = dynamic(() => import("../Map"), { ssr: false });
 
@@ -24,6 +27,8 @@ interface ListingInfoProps {
       | undefined;
 
    locationValue: string;
+   resources?: SafeResource[];
+   methods?: SafeMethod[];
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
@@ -34,12 +39,16 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
    bathroomCount,
    category,
    locationValue,
+   resources,
+   methods,
 }) => {
    const { getByValue } = useCountries();
 
    const coordinates = getByValue(locationValue)?.latlng;
-
+   console.log(resources);
+   console.log(methods);
    return (
+
       <div className="col-span-4 flex flex-col gap-8">
          <div className="flex flex-col gap-2">
             <div className="text-xl font-semibold flex flex-row items-center gap-2">
@@ -63,7 +72,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
          <hr />
          <div className="text-lg font-light text-neutral-500 ">{description}</div>
          <hr />
-         <Map center={coordinates} />
+         <ListingResources resources={resources} methods={methods} />
       </div>
    );
 };

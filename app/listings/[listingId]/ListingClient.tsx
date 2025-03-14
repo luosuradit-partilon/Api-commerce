@@ -30,7 +30,7 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeListing, SafeMethod, SafeReservation, SafeResource, SafeUser } from "@/app/types";
 import axios from "axios";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -46,6 +46,12 @@ const initialDateRange = {
 
 interface ListingClientProps {
    reservations?: SafeReservation[];
+   resources?: SafeResource[] & {
+      listing: SafeListing;
+   };
+   methods?: SafeMethod[] & {
+      resource: SafeResource;
+   };
    listing: SafeListing & {
       user: SafeUser;
    };
@@ -54,6 +60,8 @@ interface ListingClientProps {
 
 const ListingClient: React.FunctionComponent<ListingClientProps> = ({
    listing,
+   resources = [],
+   methods = [],
    currentUser,
    reservations = [],
 }) => {
@@ -141,6 +149,9 @@ const ListingClient: React.FunctionComponent<ListingClientProps> = ({
                      guestCount={listing.guestCount}
                      bathroomCount={listing.bathroomCount}
                      locationValue={listing.locationValue}
+                     resources={resources}
+                     methods={methods}
+                     
                   />
                   <div className="order-first  mb-10 md:order-last md:col-span-3">
                      <ListingReservation
