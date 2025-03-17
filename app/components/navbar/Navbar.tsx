@@ -6,6 +6,7 @@ import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { SafeUser } from "@/app/types";
+import PaymentButton from "../PaymentButton"; // Import the new button component
 
 interface NavbarProps {
    currentUser?: SafeUser | null;
@@ -20,6 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
                   <Logo />
                   <Search />
                   <UserMenu currentUser={currentUser} />
+                  <PaymentButton /> {/* Add the button component */}
                </div>
             </Container>
          </div>
