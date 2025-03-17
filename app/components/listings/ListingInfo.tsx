@@ -28,7 +28,7 @@ interface ListingInfoProps {
 
    locationValue: string;
    resources?: SafeResource[];
-   methods?: SafeMethod[];
+   methods?: SafeMethod[] | null;
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({

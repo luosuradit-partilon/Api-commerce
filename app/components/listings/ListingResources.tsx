@@ -4,7 +4,7 @@ import { SafeResource, SafeMethod } from "@/app/types";
 
 interface ListingResourcesProps {
     resources?: SafeResource[];
-    methods?: SafeMethod[];
+    methods?: SafeMethod[] | null;
 }
 
 const ListingResources: React.FC<ListingResourcesProps> = ({ resources, methods }) => {
