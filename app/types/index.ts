@@ -26,7 +26,7 @@ export type SafeResource = Omit<Resource, "resourceName" | "listing"> & {
 };
 
 export type SafeMethod = Omit<Method, "type" | "description" | "resource"> & {
-   type: string;
-   description: string;
-   resource: SafeResource;
+  type: string;
+  description: string;
+  resource: SafeResource;
 };
