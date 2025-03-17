@@ -1,8 +1,7 @@
 import { Listing, Reservation, User, Resource, Method } from "@prisma/client";
 
-export type SafeListing = Omit<Listing, "createdAt" | "user"> & {
+export type SafeListing = Omit<Listing, "createdAt"> & {
   createdAt: string;
-  user: SafeUser;
 };
 
 export type SafeReservation = Omit<
@@ -21,12 +20,13 @@ export type SafeUser = Omit<User, "createdAt" | "updatedAt" | "emailVerified"> &
   emailVerified: string | null;
 };
 
-export type SafeResource = Omit<Resource, "methods"> & {
-  resourcesName: string;
-  methods: SafeMethod[];
+export type SafeResource = Omit<Resource, "resourceName" | "listing"> & {
+  resourceName: string;
+  listing: SafeListing;
 };
 
-export type SafeMethod = Omit<Method, ""> & {
+export type SafeMethod = Omit<Method, "type" | "description" | "resource"> & {
    type: string;
    description: string;
+   resource: SafeResource;
 };

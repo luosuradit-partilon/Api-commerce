@@ -1,31 +1,37 @@
 import prisma from "@/app/libs/prismadb";
-import { SafeListing } from "@/app/types";
 
-const getListingById = async (params: { listingId?: string }): Promise<SafeListing | null> => {
-  const { listingId } = params;
-  if (!listingId) {
-    return null;
-  }
+interface IParams {
+   listingId?: string;
+}
 
-  const listing = await prisma.listing.findUnique({
-    where: { id: listingId },
-    include: { user: true },
-  });
+export default async function getListingById(params: IParams) {
+   try {
+      const { listingId } = params;
 
-  if (!listing) {
-    return null;
-  }
+      const listing = await prisma.listing.findUnique({
+         where: {
+            id: listingId,
+         },
+         include: {
+            user: true,
+         },
+      });
 
-  return {
-    ...listing,
-    createdAt: listing.createdAt.toISOString(),
-    user: {
-      ...listing.user,
-      createdAt: listing.user.createdAt.toISOString(),
-      updatedAt: listing.user.updatedAt.toISOString(),
-      emailVerified: listing.user.emailVerified?.toISOString() || null,
-    },
-  };
-};
+      if (!listing) {
+         return null;
+      }
 
-export default getListingById;
+      return {
+         ...listing,
+         createdAt: listing.createdAt.toISOString(),
+         user: {
+            ...listing.user,
+            createdAt: listing.user.createdAt.toISOString(),
+            updatedAt: listing.user.updatedAt.toDateString(),
+            emailVerified: listing.user.emailVerified?.toISOString || null,
+         },
+      };
+   } catch (error: any) {
+      throw new Error(error);
+   }
+}

@@ -17,6 +17,7 @@ const ListingPage = async ({ params }: { params: IParams }) => {
    const currentUser = await getCurrentUser();
    const resources = await getResources(params);
    const methods = await getMethods(params);
+
    if (!listing) {
       return (
          <ClientOnly>
