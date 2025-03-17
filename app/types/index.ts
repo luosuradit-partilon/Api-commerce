@@ -20,13 +20,11 @@ export type SafeUser = Omit<User, "createdAt" | "updatedAt" | "emailVerified"> &
   emailVerified: string | null;
 };
 
-export type SafeResource = Omit<Resource, "resourceName" | "listing"> & {
-  resourceName: string;
-  listing: SafeListing;
+export type SafeResource = Omit<Resource, "createdAt"> & {
+  createdAt: string;
 };
 
-export type SafeMethod = Omit<Method, "type" | "description" | "resource"> & {
-  type: string;
-  description: string;
+export type SafeMethod = Omit<Method, "createdAt"> & {
+  createdAt: string;
   resource: SafeResource;
 };

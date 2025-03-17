@@ -49,13 +49,13 @@ interface ListingClientProps {
    resources?: SafeResource[] & {
       listing: SafeListing;
    };
-   methods?: SafeMethod[] & {
-      resource: SafeResource;
-   };
    listing: SafeListing & {
       user: SafeUser;
    };
    currentUser?: SafeUser | null;
+   methods?: SafeMethod[] & {
+      resources: SafeResource;
+   };
 }
 
 const ListingClient: React.FunctionComponent<ListingClientProps> = ({
