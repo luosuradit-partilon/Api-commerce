@@ -20,8 +20,6 @@ interface TranslationContent {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log('Translation API Request:', JSON.stringify(body, null, 2));
-
     // Get the original request structure to maintain it in the response
     const originalDescription = body.content?.description || '';
     const originalResources = (body.content?.resources || {}) as Resources;
@@ -38,9 +36,7 @@ export async function POST(request: Request) {
       throw new Error('Translation API error');
     }
 
-    const data = await response.json();
-    console.log('Translation API Response:', JSON.stringify(data, null, 2));
-    
+    const data = await response.json();    
     if (!data.translation) {
       return NextResponse.json({ error: 'No translation in response' }, { status: 500 });
     }
@@ -69,13 +65,9 @@ export async function POST(request: Request) {
             .replace(/"\s*resourcesName\s*":\s*"/, '"resourcesName":"') // Fix resourcesName with spaces
             .replace(/"\s*resourcesN\s*Name\s*":\s*"/, '"resourcesName":"') // Fix resourcesName with spaces
             .replace(/"\s*method\s*":\s*"/, '"method":"') // Fix method with spaces
-            .replace(/"\s*description\s*":\s*"/, '"description":"'); // Fix description with spaces
-          
-          console.log('Cleaned JSON:', cleanedJson);
-          
+            .replace(/"\s*description\s*":\s*"/, '"description":"'); // Fix description with spaces          
           // Try to parse the cleaned JSON
           const parsedJson = JSON.parse(cleanedJson);
-          console.log('Successfully parsed JSON from markdown code block');
           
           // Update the result with parsed content
           if (parsedJson.description) {
@@ -96,8 +88,6 @@ export async function POST(request: Request) {
                   // Explicitly preserve resourceId
                   resourceId: resourceId
                 };
-                
-                console.log(`Preserved resourceId ${resourceId} for resource key ${key}`);
               } else {
                 parsedResult.resources[key] = originalResources[key];
               }
@@ -137,8 +127,6 @@ export async function POST(request: Request) {
             .replace(/ทรัพยากร/g, 'resources')
             .replace(/ชื่อทรัพยากร/g, 'resourcesName')
             .replace(/วิธีการ/g, 'method');
-          
-          console.log('Parsing Content: format:', contentStr);
           
           // Try to parse the content
           const parsedContent = JSON.parse(contentStr) as TranslationContent;
@@ -224,8 +212,6 @@ export async function POST(request: Request) {
             .replace(/ชื่อทรัพยากร/g, 'resourcesName')
             .replace(/วิธีการ/g, 'method');
           
-          console.log('Parsing content-only format:', contentStr);
-          
           // Try to parse the content
           const parsedContent = JSON.parse(contentStr) as TranslationContent;
           
@@ -284,8 +270,6 @@ export async function POST(request: Request) {
               // Explicitly preserve resourceId
               resourceId: resourceId
             };
-            
-            console.log(`Preserved resourceId ${resourceId} for resource key ${key}`);
           } else {
             parsedResult.resources[key] = originalResources[key];
           }

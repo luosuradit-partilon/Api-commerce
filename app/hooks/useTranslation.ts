@@ -92,9 +92,6 @@ const useTranslation = () => {
       // Map the translated resources back to the original structure with resourceIds
       const translatedResources = translatedContent.resources || {};
       
-      // Log the translated content for debugging
-      console.log('Translated content received:', JSON.stringify(translatedContent, null, 2));
-      
       // Create an array of translated methods with resourceIds preserved
       const translatedMethods = Object.entries(translatedResources).map(([key, resource]) => {
         const typedResource = resource as ResourceMethod;
@@ -112,8 +109,6 @@ const useTranslation = () => {
         resources: Object.values(translatedResources),
         methods: translatedMethods
       };
-      
-      console.log('Processed translation result:', JSON.stringify(result, null, 2));
       
       // Save the last translation result
       setLastTranslation(result);

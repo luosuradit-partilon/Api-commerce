@@ -16,8 +16,6 @@ const ListingResources: React.FC<ListingResourcesProps> = ({ resources, methods,
     
     // Add debugging logs to see what's being passed to the component
     useEffect(() => {
-        console.log('ListingResources received resources:', resources);
-        console.log('ListingResources received methods:', methods);
     }, [resources, methods]);
     return (
         <div>
@@ -31,11 +29,9 @@ const ListingResources: React.FC<ListingResourcesProps> = ({ resources, methods,
                             {methods
                                 ?.filter((method) => {
                                     const matches = method.resourceId === resource.id;
-                                    console.log(`Method ${method.id} with resourceId ${method.resourceId} matches resource ${resource.id}: ${matches}`);
                                     return matches;
                                 })
                                 .map((method) => {
-                                    console.log('Rendering method:', method);
                                     return (
                                         <li key={method.id}>
                                             <strong>{method.type}:</strong> {method.description || 'No description available'}

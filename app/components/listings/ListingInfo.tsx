@@ -89,21 +89,11 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
          // Map the translated method descriptions back to the original methods
          const translatedMethodsArray = translated.methods || [];
          
-         console.log('Translated methods array:', translatedMethodsArray);
-         console.log('Original methods:', methods);
-         
          const updatedMethods = methods.map(method => {
            // Find the corresponding translated method by resourceId
            const translatedMethod = translatedMethodsArray.find((m: any) => 
              m.resourceId === method.resourceId
            );
-           
-           console.log(`Looking for method with resourceId ${method.resourceId}:`, 
-             translatedMethod ? 'Found' : 'Not found');
-           
-           if (translatedMethod) {
-             console.log('Translated method:', translatedMethod);
-           }
            
            return {
              ...method,
@@ -111,7 +101,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
            };
          });
          
-         console.log('Updated methods:', updatedMethods);
          setTranslatedMethods(updatedMethods);
        }
      };

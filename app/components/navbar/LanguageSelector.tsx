@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as Flags from 'country-flag-icons/react/3x2';
-import useLanguage from '@/app/hooks/useLanguage';
+import useLanguage, { useLanguageWithUrlSync } from '@/app/hooks/useLanguage';
 
 const LanguageSelector = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,10 +13,17 @@ const LanguageSelector = () => {
     { code: 'TH', name: 'ไทย', Flag: Flags.TH, value: 'Thai' },
   ];
 
-  const { language, setLanguage } = useLanguage();
+  // Use the enhanced hook that syncs with URL
+  const { language, setLanguage } = useLanguageWithUrlSync();
   const [selectedLanguage, setSelectedLanguage] = useState(
     languages.find(lang => lang.value === language) || languages[0]
   );
+  
+  // Update selected language when language changes (e.g., from URL)
+  useEffect(() => {
+    const langObj = languages.find(lang => lang.value === language) || languages[0];
+    setSelectedLanguage(langObj);
+  }, [language]);
 
   return (
     <div className="relative">
@@ -38,7 +45,7 @@ const LanguageSelector = () => {
                 key={language.code}
                 onClick={() => {
                   setSelectedLanguage(language);
-                  setLanguage(language.value);
+                  setLanguage(language.value); // This will update the URL
                   setIsOpen(false);
                 }}
                 className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 hover:bg-neutral-100 w-full"
