@@ -5,6 +5,7 @@ import ClientOnly from "./components/ClientOnly";
 import Container from "./components/Container";
 import EmptyState from "./components/EmptyState";
 import ListingCard from "./components/listings/ListingCard";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 interface HomeProps {
    searchParams: IListingParams;
