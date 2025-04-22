@@ -6,7 +6,8 @@ import Logo from "./Logo";
 import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { SafeUser } from "@/app/types";
-import PaymentButton from "../PaymentButton"; // Import the new button component
+import PaymentButton from "../PaymentButton";
+import LanguageSelector from "./LanguageSelector";
 
 interface NavbarProps {
    currentUser?: SafeUser | null;
@@ -19,9 +20,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
             <Container>
                <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
                   <Logo />
-                  <Search />
-                  <UserMenu currentUser={currentUser} />
-                  <PaymentButton /> {/* Add the button component */}
+                  <div className="flex items-center justify-center flex-1">
+                     <Search />
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <LanguageSelector />
+                    <UserMenu currentUser={currentUser} />
+                    <PaymentButton />
+                  </div>
                </div>
             </Container>
          </div>
